@@ -755,6 +755,12 @@ void generator::visit_load_inst(ir::load_inst* x){
       vec = std::min(nts, aln);
     }
   }
+
+  // FIXME: Lucas
+//  std::cout << "Vec Width " << vec << std::endl;
+//  if (vec > 1) { std::cout << vec << " -> " << 1 << std::endl; }
+  vec = 1;
+
   // code generation
   auto idxs = idxs_.at(x);
   for(size_t i = 0; i < idxs.size(); i += vec){
@@ -2576,6 +2582,12 @@ void generator::visit_masked_load_async_inst(ir::masked_load_async_inst* x){
   // tiles
   if(out_order == in_order)
     in_vec = in_layout->nts(in_order[0]);
+
+  // FIXME: Lucas
+//  std::cout << "In-Vec Width " << in_vec << std::endl;
+//  if (in_vec > 1) { std::cout << in_vec << " -> " << 1 << std::endl; }
+  in_vec = 1;
+
   int out_vec = swizzle_->get_vec(out_layout);
   int min_vec = std::min<int>(out_vec, in_vec);
   int s = std::max<int>(out_vec / in_vec, 1);

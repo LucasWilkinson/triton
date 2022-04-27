@@ -122,7 +122,9 @@ bool peephole::rewrite_load_to_shared(ir::instruction *value, ir::builder& build
   analysis::scanline_layout* layout = layouts_->get(ptr)->to_scanline();
   int nts = layout->nts(layout->get_order()[0]);
   int dtsize = value->get_type()->get_scalar_ty()->get_primitive_size_in_bits() / 8;
-  if(nts*dtsize >= 4){
+
+  // FIXME: Lucas, get rid of `&& false` once vector loads are fixed
+  if(nts*dtsize >= 4 && false){
     ir::value* new_load = builder.create_masked_load_async(ptr, msk, val, ld->get_cache_modifier(), ld->get_eviction_policy());
     copy_to_shared->replace_all_uses_with(new_load);
     return true;
