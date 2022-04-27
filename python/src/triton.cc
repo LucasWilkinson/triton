@@ -518,6 +518,11 @@ std::tuple<std::string, asm_map_t, int> hip_compile_ttir(const std::string& name
 }
 
 void init_triton_codegen(py::module &&m) {
+  m.def("ttir_str", [](ir::module &ir) {
+      std::ostringstream ttir;
+      ir.print(ttir);
+      return py::cast(ttir.str());
+  });
   m.def(
       "compile_ttir", [](backend_t backend, ir::module &ir, uint64_t device, int num_warps, int num_stages) {
         std::string name = ir.get_function_list()[0]->get_name();
